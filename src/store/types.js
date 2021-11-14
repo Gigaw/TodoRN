@@ -1,0 +1,5 @@
+//user
+
+const USER = {
+  
+}
