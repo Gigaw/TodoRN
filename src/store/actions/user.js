@@ -64,3 +64,71 @@ export const getUser = (login, password) => {
     dispatch(setUser(user));
   };
 };
+
+const initializeRegistrationFlow = async () => {
+  try {
+    const response = await axios({
+      url: '/self-service/registration/api',
+      method: 'get',
+      baseURL: KRATOS_URL,
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    if (e.response) {
+      return e.response;
+    }
+  }
+};
+
+const completeRegistrationFlow = async ({
+  email,
+  password,
+  firstName,
+  lastName,
+}) => {
+  const registrationFlow = await initializeRegistrationFlow();
+  
+  if (registrationFlow) {
+    const config = registrationFlow.methods.password.config;
+
+    //получаю значение токена
+    const csrfToken = config.fields.find(el => el.name === 'csrf_token').value;
+
+    try {
+      const response = await axios({
+        url: config.action,
+        method: config.method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          'traits.email': email,
+          'traits.name.first': firstName,
+          'traits.name.last': lastName,
+          password: password,
+          csrf_token: csrfToken,
+        },
+      });
+
+      console.log(response.data);
+      return response.data;
+    } catch (e) {
+      console.log(e);
+
+      //Cообщение об ошибке при попытке входа
+      return null;
+    }
+  } else {
+    //Cообщение об ошибке при получении flow id
+    return null;
+  }
+};
+
+export const registerUser = (data) => {
+  return async dispatch => {
+    const registration = await completeRegistrationFlow(data)
+    dispatch(setUser(registration))
+  }
+}

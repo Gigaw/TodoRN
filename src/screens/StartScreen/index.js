@@ -37,7 +37,7 @@ export default StartScreen = ({ navigation }) => {
           title="Get Started"
           onPress={() => {
             // console.log(1)
-            navigation.navigate("SignUp");
+            navigation.navigate("SignIn");
             // getResponse()
           }}
         />

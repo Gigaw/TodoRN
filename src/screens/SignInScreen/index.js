@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, SafeAreaView, View, Image} from 'react-native';
+import {Text, SafeAreaView, View, Image, TouchableOpacity} from 'react-native';
 
 import styles from './styles';
 
@@ -11,16 +11,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUser} from '../../store/actions/user';
 
 export default SignInScreen = ({navigation}) => {
-  const [email, setEmail] = useState('gigolaevigor@mail.ru');
-  const [password, setPassword] = useState('071001099');
-  const user = useSelector(state => state.user.user);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user !== null) {
-      navigation.navigate('Home');
-    }
-  });
+  const [signInEmail, setSignInEmail] = useState('gigolaevigor@mail.ru');
+  const [signInPassword, setSignInPassword] = useState('071001099');
+  // const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,14 +28,14 @@ export default SignInScreen = ({navigation}) => {
         />
         <View style={styles.inputsContainer}>
           <AppInput
-            placeholder="Enter your email"
-            onChangeText={setEmail}
-            value={email}
+            placeholder="Enter your signInEmail"
+            onChangeText={setSignInEmail}
+            value={signInEmail}
           />
           <AppInput
-            placeholder="Confirm password"
-            onChangeText={setPassword}
-            value={password}
+            placeholder="Confirm signInPassword"
+            onChangeText={setSignInPassword}
+            value={signInPassword}
           />
         </View>
         <View style={[styles.alternativeTextContainer, {marginBottom: 25}]}>
@@ -51,13 +44,15 @@ export default SignInScreen = ({navigation}) => {
         <AppButton
           title="Sign In"
           onPress={() => {
-            dispatch(getUser(email, password));
+            dispatch(getUser(signInEmail, signInPassword));
           }}
           style={styles.button}
         />
         <View style={styles.alternativeTextContainer}>
           <Text style={styles.alternativeText}>Don’t have an account? </Text>
-          <Text style={styles.alternativeTextStrong}>Sign Up</Text>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={styles.alternativeTextStrong}>Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
