@@ -9,18 +9,19 @@ import AppTitle from '../../components/AppTitle';
 import HeaderCircles from '../../components/HeaderCircles';
 import AppClock from '../../components/AppClock';
 import TaskList from '../../components/TaskList';
+import { clearUserData } from '../../store/actions/user';
 
 export default HomeScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
   return (
     <>
       <View style={styles.smallContainer}>
         <HeaderCircles color="rgba(255, 252, 238, 0.47)" />
         <SafeAreaView style={{flex: 1, justifyContent: 'flex-end'}}>
           <View style={styles.smallContainerContent}>
-            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-              <View>
+            <TouchableOpacity onPress={() => dispatch(clearUserData())}>
                 <Text>LOGOUT</Text>
-              </View>
             </TouchableOpacity>
             <Image
               source={require('../../assets/images/person.jpg')}

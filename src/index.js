@@ -14,7 +14,7 @@ import StartScreen from './screens/StartScreen';
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
-  // const token = useSelector(state => state.user.token);
+  const token = useSelector(state => state.user.token);
 
   return (
     <>
@@ -23,15 +23,15 @@ export default function Navigation() {
           screenOptions={{headerShown: false}}
           // initialRouteName="Home"
         >
-          {/* {!token ? (
-          <> */}
-          <Stack.Screen name="Start" component={StartScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          {/* </> */}
-          {/* ) : ( */}
-          <Stack.Screen name="Home" component={HomeScreen} />
-          {/* )} */}
+          {!token ? (
+            <>
+              <Stack.Screen name="Start" component={StartScreen} />
+              <Stack.Screen name="SignIn" component={SignInScreen} />
+              <Stack.Screen name="SignUp" component={SignUpScreen} />
+            </>
+          ) : (
+            <Stack.Screen name="Home" component={HomeScreen} />
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </>

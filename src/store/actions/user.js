@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {setError, setUser} from '../reducers/userReducer';
+import {clearUser, setError, setUser} from '../reducers/userReducer';
 import {
   completeLoginFlow,
   getErrorsFromFields,
@@ -12,7 +12,7 @@ export const getUser = (login, password) => {
   return async dispatch => {
     const user = await completeLoginFlow(login, password);
     if (user.status === 200) {
-      dispatch(setUser(user));
+      dispatch(setUser(user.data));
     } else {
       const messages = user?.data.methods.password.config.messages;
       const errors = getErrorsFromMessages(messages);
@@ -96,4 +96,8 @@ export const registerUser = data => {
 
 export const clearUserError = () => dispatch => {
   dispatch(setError({hasError: false, errorMessage: ''}));
+};
+
+export const clearUserData = () => dispatch => {
+  dispatch(clearUser());
 };
