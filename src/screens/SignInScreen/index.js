@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, SafeAreaView, View, Image, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  SafeAreaView,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 
 import styles from './styles';
 
@@ -8,12 +15,25 @@ import HeaderCircles from '../../components/HeaderCircles/';
 import AppTitle from '../../components/AppTitle/';
 import AppInput from '../../components/AppInput/';
 import {useDispatch, useSelector} from 'react-redux';
-import {getUser} from '../../store/actions/user';
+import {clearUserError, getUser} from '../../store/actions/user';
 
 export default SignInScreen = ({navigation}) => {
   const [signInEmail, setSignInEmail] = useState('gigolaevigor@mail.ru');
   const [signInPassword, setSignInPassword] = useState('071001099');
-  // const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  // const errorMessage = useSelector(state => state.user.errorMessage);
+  const dispatch = useDispatch();
+
+  const errorAlert = () =>
+    Alert.alert('Error while login', user.errorMessage, [
+      {text: 'OK', onPress: () => dispatch(clearUserError())},
+    ]);
+
+  useEffect(() => {
+    if (user.hasError) {
+      errorAlert();
+    }
+  }, [user]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,7 +59,9 @@ export default SignInScreen = ({navigation}) => {
           />
         </View>
         <View style={[styles.alternativeTextContainer, {marginBottom: 25}]}>
-          <Text style={styles.alternativeTextStrong}>Forgot Password</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.alternativeTextStrong}>Forgot Password</Text>
+          </TouchableOpacity>
         </View>
         <AppButton
           title="Sign In"
@@ -50,7 +72,7 @@ export default SignInScreen = ({navigation}) => {
         />
         <View style={styles.alternativeTextContainer}>
           <Text style={styles.alternativeText}>Don’t have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.alternativeTextStrong}>Sign Up</Text>
           </TouchableOpacity>
         </View>

@@ -2,7 +2,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 // import {createStackNavigator} from '@react-navigation/stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 
 //screens
@@ -17,21 +17,23 @@ export default function Navigation() {
   // const token = useSelector(state => state.user.token);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{headerShown: false}}
-        // initialRouteName="Home"
+    <>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{headerShown: false}}
+          // initialRouteName="Home"
         >
-        {/* {!token ? (
+          {/* {!token ? (
           <> */}
-            <Stack.Screen name="Start" component={StartScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="Start" component={StartScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
           {/* </> */}
-        {/* ) : ( */}
+          {/* ) : ( */}
           <Stack.Screen name="Home" component={HomeScreen} />
-        {/* )} */}
-      </Stack.Navigator>
-    </NavigationContainer>
+          {/* )} */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
