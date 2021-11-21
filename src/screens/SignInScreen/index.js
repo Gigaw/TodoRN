@@ -20,20 +20,8 @@ import {clearUserError, getUser} from '../../store/actions/user';
 export default SignInScreen = ({navigation}) => {
   const [signInEmail, setSignInEmail] = useState('gigolaevigor@mail.ru');
   const [signInPassword, setSignInPassword] = useState('071001099');
-  const user = useSelector(state => state.user);
   // const errorMessage = useSelector(state => state.user.errorMessage);
   const dispatch = useDispatch();
-
-  const errorAlert = () =>
-    Alert.alert('Error while login', user.errorMessage, [
-      {text: 'OK', onPress: () => dispatch(clearUserError())},
-    ]);
-
-  useEffect(() => {
-    if (user.hasError) {
-      errorAlert();
-    }
-  }, [user]);
 
   return (
     <SafeAreaView style={styles.container}>

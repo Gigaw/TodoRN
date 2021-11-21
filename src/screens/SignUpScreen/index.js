@@ -9,23 +9,26 @@ import AppText from '../../components/AppText/';
 import AppTitle from '../../components/AppTitle/';
 import AppInput from '../../components/AppInput/';
 import {registerUser} from '../../store/actions/user';
+import {useDispatch} from 'react-redux';
 
 export default SignUpScreen = ({navigation}) => {
   const [name, setName] = useState('David Guanov');
   const [email, setEmail] = useState('davidguanov@mail.ru');
   const [password, setPassword] = useState('1234odva');
   const [confirmPassword, setConfirmPassword] = useState('1234odva');
+  const dispatch = useDispatch();
 
   const pressHandler = () => {
     const curName = name.trim().replace(/\s+/g, ' ');
     const [firstName, ...secondName] = curName.split(' ');
-
-    return registerUser({
-      email,
-      password,
-      firstName,
-      secondName: secondName.join(''),
-    });
+    dispatch(
+      registerUser({
+        email,
+        password,
+        firstName,
+        secondName: secondName.join(''),
+      }),
+    );
   };
 
   return (

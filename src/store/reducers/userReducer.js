@@ -25,14 +25,13 @@ export default userReducer = (state = initialState, action) => {
         hasError: action.payload.hasError,
         errorMessage: action.payload.errorMessage,
       };
-    case CLEAR_USER: {
+    case CLEAR_USER:
       return {
         ...state,
         token: null,
         user: null,
         isFetching: false,
       };
-    }
     default:
       return state;
   }

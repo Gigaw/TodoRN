@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Image, View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 
 import styles from './styles';
@@ -10,9 +10,15 @@ import HeaderCircles from '../../components/HeaderCircles';
 import AppClock from '../../components/AppClock';
 import TaskList from '../../components/TaskList';
 import { clearUserData } from '../../store/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default HomeScreen = ({navigation}) => {
+  const user = useSelector(state => state.user.user)
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   console.log('user', user)
+  // })
 
   return (
     <>
@@ -27,7 +33,7 @@ export default HomeScreen = ({navigation}) => {
               source={require('../../assets/images/person.jpg')}
               style={styles.avatar}
             />
-            <AppTitle style={styles.welcomeText}>Welcome Anand!</AppTitle>
+            <AppTitle style={styles.welcomeText}>Welcome {user.name.first}!</AppTitle>
           </View>
         </SafeAreaView>
       </View>

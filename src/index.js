@@ -1,9 +1,9 @@
 //npm
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 // import {createStackNavigator} from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 //screens
 import SignInScreen from './screens/SignInScreen';
@@ -15,6 +15,19 @@ const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
   const token = useSelector(state => state.user.token);
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const errorAlert = () =>
+    Alert.alert('Error', user.errorMessage, [
+      {text: 'OK', onPress: () => dispatch(clearUserError())},
+    ]);
+
+  useEffect(() => {
+    if (user.hasError) {
+      errorAlert();
+    }
+  }, [user]);
 
   return (
     <>

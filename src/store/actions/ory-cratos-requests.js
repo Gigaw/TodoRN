@@ -7,8 +7,10 @@ const initializeFlow = async (type = 'login') => {
   switch (type) {
     case 'login':
       url = '/self-service/login/api?refresh=false';
+      break;
     case 'register':
       url = '/self-service/registration/api';
+      break;
   }
 
   try {
@@ -28,11 +30,10 @@ const initializeFlow = async (type = 'login') => {
 
 export const completeLoginFlow = async (login, password) => {
   const loginFlow = await initializeFlow('login');
-
+  // console.log(loginFlow.status)
   if (loginFlow.status === 200 && loginFlow !== undefined) {
     const config = loginFlow.data.methods.password.config;
-
-    //получаю значение токена
+    //получаю значение csrf токена
     const csrfToken = config.fields.find(el => el.name === 'csrf_token').value;
 
     try {
@@ -66,7 +67,7 @@ export const completeRegisterFlow = async ({
   firstName,
   lastName,
 }) => {
-  const registerFlow = await initializeFlow(register);
+  const registerFlow = await initializeFlow('register');
 
   if (registerFlow.status === 200 && registerFlow !== undefined) {
     const config = registerFlow.data.methods.password.config;
