@@ -16,12 +16,39 @@ import AppTitle from '../../components/AppTitle/';
 import AppInput from '../../components/AppInput/';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearUserError, getUser} from '../../store/actions/user';
+import {
+  setSignInData,
+  getSignInData,
+  getShouldAutoAuthorize,
+  setShouldAutoAuthorize,
+} from '../../utils/asyncStorage';
 
-export default SignInScreen = ({navigation}) => {
-  const [signInEmail, setSignInEmail] = useState('gigolaevigor@mail.ru');
-  const [signInPassword, setSignInPassword] = useState('071001099');
+export default SignInScreen = ({navigation, route}) => {
+  const [email, setEmail] = useState(route.params?.email);
+  const [password, setPassword] = useState(route.params?.password);
+  const [shouldAuthorize, setShouldAuthorize] = useState(false);
+  // const [email, setEmail] = useState('gigolaevigor@mail.ru');
+  // const [password, setPassword] = useState('071001099');
   // const errorMessage = useSelector(state => state.user.errorMessage);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const cachedSignInData = await getSignInData();
+      const cachedShouldAutoAuthorize = await getShouldAutoAuthorize();
+      console.log('cachedShouldAutoAuthorize', cachedShouldAutoAuthorize);
+      setEmail(cachedSignInData.email);
+      setPassword(cachedSignInData.password);
+      setShouldAuthorize(cachedShouldAutoAuthorize);
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log(shouldAuthorize);
+    if (shouldAuthorize && email && password) {
+      dispatch(getUser(email, password));
+    }
+  }, [shouldAuthorize]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,14 +63,14 @@ export default SignInScreen = ({navigation}) => {
         />
         <View style={styles.inputsContainer}>
           <AppInput
-            placeholder="Enter your signInEmail"
-            onChangeText={setSignInEmail}
-            value={signInEmail}
+            placeholder="Enter your email"
+            onChangeText={setEmail}
+            value={email}
           />
           <AppInput
-            placeholder="Confirm signInPassword"
-            onChangeText={setSignInPassword}
-            value={signInPassword}
+            placeholder="Confirm password"
+            onChangeText={setPassword}
+            value={password}
           />
         </View>
         <View style={[styles.alternativeTextContainer, {marginBottom: 25}]}>
@@ -54,7 +81,9 @@ export default SignInScreen = ({navigation}) => {
         <AppButton
           title="Sign In"
           onPress={() => {
-            dispatch(getUser(signInEmail, signInPassword));
+            setSignInData(email, password);
+            setShouldAutoAuthorize(true);
+            dispatch(getUser(email, password));
           }}
           style={styles.button}
         />

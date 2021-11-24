@@ -1,5 +1,5 @@
 //npm
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 // import {createStackNavigator} from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -10,6 +10,8 @@ import SignInScreen from './screens/SignInScreen';
 import HomeScreen from './screens/HomeScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import StartScreen from './screens/StartScreen';
+import {getSignInData, setShouldAutoAuthorize} from './utils/asyncStorage';
+import {getUser} from './store/actions/user';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,7 @@ export default function Navigation() {
   const token = useSelector(state => state.user.token);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const [signInData, setSignInData] = useState(null);
 
   const errorAlert = () =>
     Alert.alert('Error', user.errorMessage, [
@@ -26,20 +29,43 @@ export default function Navigation() {
   useEffect(() => {
     if (user.hasError) {
       errorAlert();
+      setShouldAutoAuthorize(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    (async () => {
+      const cachedSignInData = await getSignInData();
+      console.log(cachedSignInData);
+      setSignInData(cachedSignInData);
+    })();
+  }, []);
+
+  // useEffect(() => {
+  //   if (signInData.email && signInData.password)
+  //     dispatch(getUser(signInData.email, signInData.password));
+  // });
 
   return (
     <>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{headerShown: false}}
-          // initialRouteName="Home"
+          // initialRouteName={signInData === null ? 'Start' : 'SignIn'}
         >
           {!token ? (
             <>
-              <Stack.Screen name="Start" component={StartScreen} />
-              <Stack.Screen name="SignIn" component={SignInScreen} />
+              {signInData ? (
+                <Stack.Screen name="Start" component={StartScreen} />
+              ) : null}
+              <Stack.Screen
+                name="SignIn"
+                component={SignInScreen}
+                initialParams={{
+                  email: signInData?.email,
+                  password: signInData?.password,
+                }}
+              />
               <Stack.Screen name="SignUp" component={SignUpScreen} />
             </>
           ) : (

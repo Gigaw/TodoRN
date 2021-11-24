@@ -30,8 +30,8 @@ const initializeFlow = async (type = 'login') => {
 
 export const completeLoginFlow = async (login, password) => {
   const loginFlow = await initializeFlow('login');
-  // console.log(loginFlow.status)
-  if (loginFlow.status === 200 && loginFlow !== undefined) {
+  // console.log(loginFlow)
+  if (loginFlow !== undefined && loginFlow?.status === 200) {
     const config = loginFlow.data.methods.password.config;
     //получаю значение csrf токена
     const csrfToken = config.fields.find(el => el.name === 'csrf_token').value;
