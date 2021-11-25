@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Image, View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 
 import styles from './styles';
@@ -21,6 +21,7 @@ export default HomeScreen = ({navigation}) => {
   //   console.log('user', user)
   // })
 
+
   return (
     <>
       <View style={styles.smallContainer}>
@@ -34,10 +35,13 @@ export default HomeScreen = ({navigation}) => {
               }}>
               <Text>LOGOUT</Text>
             </TouchableOpacity>
-            <Image
-              source={require('../../assets/images/person.jpg')}
-              style={styles.avatar}
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
+              <Image
+                source={require('../../assets/images/person.jpg')}
+                style={styles.avatar}
+              />
+            </TouchableOpacity>
+
             <AppTitle style={styles.welcomeText}>
               Welcome {user.name.first}!
             </AppTitle>

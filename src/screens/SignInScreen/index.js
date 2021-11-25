@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-
 import styles from './styles';
 
 import AppButton from '../../components/AppButton/';
@@ -30,6 +29,7 @@ export default SignInScreen = ({navigation, route}) => {
   // const [email, setEmail] = useState('gigolaevigor@mail.ru');
   // const [password, setPassword] = useState('071001099');
   // const errorMessage = useSelector(state => state.user.errorMessage);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -94,6 +94,7 @@ export default SignInScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </View>
+      
     </SafeAreaView>
   );
 };
