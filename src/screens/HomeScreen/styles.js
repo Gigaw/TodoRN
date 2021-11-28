@@ -12,6 +12,8 @@ export default styles = StyleSheet.create({
   avatar: {
     borderRadius: 100,
     marginBottom: 20,
+    width: 100,
+    height: 100
   },
   welcomeText: {
     marginBottom: 20,

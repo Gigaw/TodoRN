@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
 
 import styles from './styles';
@@ -13,14 +13,18 @@ import {clearUserData} from '../../store/actions/user';
 import {useDispatch, useSelector} from 'react-redux';
 import {setShouldAutoAuthorize} from '../../utils/asyncStorage';
 
-export default HomeScreen = ({navigation}) => {
-  const user = useSelector(state => state.user.user);
+export default HomeScreen = ({navigation, route}) => {
+  // const user = useSelector(state => state.user.user);
+  // const [avatar, setAvatar] = useState(newAvatar || '../../assets/images/person.jpg')
+  const avatarUri = useSelector(state => state.user.avatar);
   const dispatch = useDispatch();
+  const newAvatar = route?.params?.newAvatar;
 
-  // useEffect(() => {
-  //   console.log('user', user)
-  // })
-
+  useEffect(() => {
+    console.log('new Avatar', avatarUri);
+    // if(newAvatar) setAvatar
+    // console.log('avatar', avatar);
+  });
 
   return (
     <>
@@ -36,14 +40,23 @@ export default HomeScreen = ({navigation}) => {
               <Text>LOGOUT</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
-              <Image
-                source={require('../../assets/images/person.jpg')}
-                style={styles.avatar}
-              />
+              {newAvatar ? (
+                <Image
+                  source={{
+                    uri: newAvatar,
+                  }}
+                  style={styles.avatar}
+                />
+              ) : (
+                <Image
+                  source={require('../../assets/images/person.jpg')}
+                  style={styles.avatar}
+                />
+              )}
             </TouchableOpacity>
 
             <AppTitle style={styles.welcomeText}>
-              Welcome {user.name.first}!
+              {/* Welcome {user.name.first}! */}
             </AppTitle>
           </View>
         </SafeAreaView>

@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {styles} from './styles';
 
+
 class Camera extends PureComponent {
   render() {
     return (
@@ -13,7 +14,7 @@ class Camera extends PureComponent {
           }}
           style={styles.preview}
           type={RNCamera.Constants.Type.back}
-          flashMode={RNCamera.Constants.FlashMode.on}
+          flashMode={RNCamera.Constants.FlashMode.off}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
             message: 'We need your permission to use your camera',
@@ -27,7 +28,7 @@ class Camera extends PureComponent {
             buttonNegative: 'Cancel',
           }}
           onGoogleVisionBarcodesDetected={({barcodes}) => {
-            console.log(barcodes);
+            // console.log(barcodes);
           }}
         />
         <View style={{flex: 0, flexDirection: 'row', justifyContent: 'center'}}>
@@ -43,9 +44,8 @@ class Camera extends PureComponent {
 
   takePicture = async () => {
     if (this.camera) {
-      const options = {quality: 0.5, base64: true};
-      const data = await this.camera.takePictureAsync(options);
-      console.log(data.uri);
+      const data = await this.camera.takePictureAsync();
+      this.props.navigation.navigate('Home', {newAvatar: data.uri});
     }
   };
 }

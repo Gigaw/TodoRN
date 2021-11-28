@@ -4,6 +4,7 @@ const CLEAR_USER = 'CLEAR_USER';
 
 const initialState = {
   user: null,
+  avatar: '',
   isFetching: true,
   token: null,
   hasError: false,
