@@ -1,5 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
 import styles from './styles';
 
@@ -13,18 +21,36 @@ import {clearUserData} from '../../store/actions/user';
 import {useDispatch, useSelector} from 'react-redux';
 import {setShouldAutoAuthorize} from '../../utils/asyncStorage';
 
+Geolocation.setRNConfiguration({skipPermissionRequests: true, authorizationLevel: 'whenInUse' });
+Geolocation.requestAuthorization();
+// Geolocation.setRNConfiguration(config);
+
 export default HomeScreen = ({navigation, route}) => {
   // const user = useSelector(state => state.user.user);
   // const [avatar, setAvatar] = useState(newAvatar || '../../assets/images/person.jpg')
+  const [position, setPosition] = useState(null);
   const avatarUri = useSelector(state => state.user.avatar);
   const dispatch = useDispatch();
   const newAvatar = route?.params?.newAvatar;
 
   useEffect(() => {
     console.log('new Avatar', avatarUri);
+
     // if(newAvatar) setAvatar
     // console.log('avatar', avatar);
   });
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      info => {
+        console.log('geolocation', info);
+        const initialPosition = JSON.stringify(info);
+        setPosition(initialPosition);
+      },
+      error => Alert.alert('Error', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
+  }, []);
 
   return (
     <>
@@ -56,6 +82,7 @@ export default HomeScreen = ({navigation, route}) => {
             </TouchableOpacity>
 
             <AppTitle style={styles.welcomeText}>
+              current position: {position}
               {/* Welcome {user.name.first}! */}
             </AppTitle>
           </View>
