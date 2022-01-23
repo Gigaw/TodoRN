@@ -1,5 +1,6 @@
 import axios from 'axios';
-const KRATOS_URL = 'http://127.0.0.1:4433/';
+// const KRATOS_URL = 'https://127.0.0.1:4433/';
+const KRATOS_URL = 'https://purple-pig.website';
 
 const initializeFlow = async (type = 'login') => {
   let url;

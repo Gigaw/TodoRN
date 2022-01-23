@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {Text, SafeAreaView, View, TouchableOpacity} from 'react-native';
-
 import styles from './styles';
-
 import AppButton from '../../components/AppButton/';
 import HeaderCircles from '../../components/HeaderCircles/';
 import AppText from '../../components/AppText/';
@@ -11,25 +9,47 @@ import AppInput from '../../components/AppInput/';
 import {registerUser} from '../../store/actions/user';
 import {useDispatch} from 'react-redux';
 
+const calculateIsRegisterButtonDisabled = ({
+  email,
+  password,
+  name,
+  confirmPassword,
+}) => {
+  if (
+    email.length > 0 &&
+    password.length > 0 &&
+    name.length > 0 &&
+    confirmPassword > 0 &&
+    password === confirmPassword
+  ) {
+    return false;
+  }
+  return true;
+};
+
 export default SignUpScreen = ({navigation}) => {
-  const [name, setName] = useState('David Guanov');
-  const [email, setEmail] = useState('davidguanov@mail.ru');
-  const [password, setPassword] = useState('1234odva');
-  const [confirmPassword, setConfirmPassword] = useState('1234odva');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const dispatch = useDispatch();
 
   const pressHandler = () => {
-    const curName = name.trim().replace(/\s+/g, ' ');
-    const [firstName, ...secondName] = curName.split(' ');
     dispatch(
       registerUser({
         email,
         password,
-        firstName,
-        secondName: secondName.join(''),
+        name,
       }),
     );
   };
+
+  const isButtonDisabled = calculateIsRegisterButtonDisabled({
+    email,
+    password,
+    name,
+    confirmPassword,
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,6 +85,7 @@ export default SignUpScreen = ({navigation}) => {
           title="Register"
           onPress={pressHandler}
           style={styles.button}
+          disabled={isButtonDisabled}
         />
         <View style={styles.alternativeTextContainer}>
           <Text style={styles.alternativeText}>Already have an account? </Text>

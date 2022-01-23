@@ -11,7 +11,7 @@ import AppTitle from "../AppTitle";
 
 import styles from "./styles";
 
-export default Task = ({ name, isChecked }) => {
+export default Task = ({ name, isChecked, onPress }) => {
   const checkboxStyle = [styles.checkbox];
   const lineStyle = [styles.line];
 
@@ -22,7 +22,7 @@ export default Task = ({ name, isChecked }) => {
 
   return (
     <View style={styles.task}>
-      <TouchableOpacity onPress={() => console.log('task')}>
+      <TouchableOpacity onPress={onPress}>
         <View style={checkboxStyle} />
       </TouchableOpacity>
       <View style={styles.taskTextContainer}>

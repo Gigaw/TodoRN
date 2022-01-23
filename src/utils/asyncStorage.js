@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const setSignInData = async (email, password) => {
   try {
-    await AsyncStorage.setItem('user_password', password);
-    await AsyncStorage.setItem('user_email', email);
+    AsyncStorage.setItem('user_password', password);
+    AsyncStorage.setItem('user_email', email);
   } catch (e) {
     console.log(e);
   }

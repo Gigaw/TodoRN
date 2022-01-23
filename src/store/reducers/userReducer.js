@@ -16,9 +16,9 @@ export default userReducer = (state = initialState, action) => {
     case SET_USER:
       return {
         ...state,
-        token: action.payload.session_token,
+        token: action.payload.token,
         isFetching: false,
-        user: action.payload.session.identity.traits,
+        user: action.payload.user,
       };
     case SET_ERROR:
       return {

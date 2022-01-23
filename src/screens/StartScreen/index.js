@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Image, SafeAreaView, View, Text } from "react-native";
 
 import styles from "./styles";
@@ -10,13 +10,6 @@ import AppTitle from "../../components/AppTitle/";
 
 
 export default StartScreen = ({ navigation }) => {
-  // const [isSignedIn, setIsSignedIn] = useState(true);
-
-  useEffect(() => {
-    // console.log(2)
-    // getResponse()
-  }, []);
-
   return (
     <SafeAreaView style={styles.container}>
       <HeaderCircles />

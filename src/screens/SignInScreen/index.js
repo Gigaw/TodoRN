@@ -1,54 +1,32 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  SafeAreaView,
-  View,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {Text, SafeAreaView, View, Image, TouchableOpacity} from 'react-native';
 import styles from './styles';
-
 import AppButton from '../../components/AppButton/';
 import HeaderCircles from '../../components/HeaderCircles/';
 import AppTitle from '../../components/AppTitle/';
 import AppInput from '../../components/AppInput/';
-import {useDispatch, useSelector} from 'react-redux';
-import {clearUserError, getUser} from '../../store/actions/user';
-import {
-  setSignInData,
-  getSignInData,
-  getShouldAutoAuthorize,
-  setShouldAutoAuthorize,
-} from '../../utils/asyncStorage';
+import {useDispatch} from 'react-redux';
+import {getUser} from '../../store/actions/user';
+import {getSignInData} from '../../utils/asyncStorage';
 
 export default SignInScreen = ({navigation, route}) => {
   const [email, setEmail] = useState(route.params?.email);
   const [password, setPassword] = useState(route.params?.password);
-  const [shouldAuthorize, setShouldAuthorize] = useState(false);
-  // const [email, setEmail] = useState('gigolaevigor@mail.ru');
-  // const [password, setPassword] = useState('071001099');
-  // const errorMessage = useSelector(state => state.user.errorMessage);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
-      const cachedSignInData = await getSignInData();
-      const cachedShouldAutoAuthorize = await getShouldAutoAuthorize();
-      console.log('cachedShouldAutoAuthorize', cachedShouldAutoAuthorize);
-      setEmail(cachedSignInData.email);
-      setPassword(cachedSignInData.password);
-      setShouldAuthorize(cachedShouldAutoAuthorize);
+      try {
+        const cachedSignInData = await getSignInData();
+        setEmail(cachedSignInData.email);
+        setPassword(cachedSignInData.password);
+      } catch (e) {
+        console.log('Ошибка получения данных и async storage');
+      }
     })();
   }, []);
 
-  useEffect(() => {
-    console.log(shouldAuthorize);
-    if (shouldAuthorize && email && password) {
-      dispatch(getUser(email, password));
-    }
-  }, [shouldAuthorize]);
+  const isButtonDisabled = !(email?.length && password?.length);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,6 +49,7 @@ export default SignInScreen = ({navigation, route}) => {
             placeholder="Confirm password"
             onChangeText={setPassword}
             value={password}
+            secureTextEntry={true}
           />
         </View>
         <View style={[styles.alternativeTextContainer, {marginBottom: 25}]}>
@@ -81,11 +60,10 @@ export default SignInScreen = ({navigation, route}) => {
         <AppButton
           title="Sign In"
           onPress={() => {
-            setSignInData(email, password);
-            setShouldAutoAuthorize(true);
             dispatch(getUser(email, password));
           }}
           style={styles.button}
+          disabled={isButtonDisabled}
         />
         <View style={styles.alternativeTextContainer}>
           <Text style={styles.alternativeText}>Don’t have an account? </Text>
@@ -94,7 +72,6 @@ export default SignInScreen = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
       </View>
-      
     </SafeAreaView>
   );
 };

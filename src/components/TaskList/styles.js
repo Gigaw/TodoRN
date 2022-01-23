@@ -22,10 +22,6 @@ export default styles = StyleSheet.create({
     marginBottom: 15,
   },
   addBtn: {
-    width: 18,
-    height: 18,
-    borderRadius: 3,
-    backgroundColor: "#FFD615",
     marginLeft: "auto",
   },
   task: {

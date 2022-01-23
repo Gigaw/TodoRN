@@ -14,6 +14,9 @@ export default styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 5,
   },
+  buttonDisabled: {
+    backgroundColor: "gray",
+  },
   buttonText: {
     fontWeight: "bold",
     fontSize: 22,

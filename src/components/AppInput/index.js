@@ -2,7 +2,14 @@ import React from 'react';
 import {View, TextInput} from 'react-native';
 import styles from './styles';
 
-const AppInput = ({style, placeholder, value, onChangeText, autoCapitalize}) => {
+const AppInput = ({
+  style,
+  placeholder,
+  value,
+  onChangeText,
+  autoCapitalize,
+  secureTextEntry
+}) => {
   const inputStyle = [styles.input];
 
   if (style) {
@@ -16,6 +23,7 @@ const AppInput = ({style, placeholder, value, onChangeText, autoCapitalize}) => 
   return (
     <View style={styles.input}>
       <TextInput
+        secureTextEntry={secureTextEntry}
         style={styles.inputText}
         placeholder={placeholder}
         value={value}
