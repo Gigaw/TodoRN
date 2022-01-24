@@ -52,7 +52,7 @@ export default function Navigation() {
       >
         {!token ? (
           <>
-            {signInData ? (
+            {!signInData ? (
               <Stack.Screen name="Start" component={StartScreen} />
             ) : null}
             <Stack.Screen

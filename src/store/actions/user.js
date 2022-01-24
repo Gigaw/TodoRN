@@ -22,7 +22,7 @@ export const getUser = (login, password) => {
 export const registerUser = data => {
   return dispatch => {
     try {
-      setSignInData(data.login, data.password);
+      setSignInData(data.email || '', data.password || '');
     } catch (e) {
       console.log('async storate error while register user ', e);
     }

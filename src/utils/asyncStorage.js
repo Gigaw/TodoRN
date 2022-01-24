@@ -13,10 +13,12 @@ export const getSignInData = async () => {
     const email = await AsyncStorage.getItem('user_email');
     const password = await AsyncStorage.getItem('user_password');
 
-    if (email === null && password === null) {
-      return null;
-    } else {
+    // console.log(email, password);
+
+    if (email && password) {
       return {email, password};
+    } else {
+      return null;
     }
   } catch (e) {
     console.log(e);

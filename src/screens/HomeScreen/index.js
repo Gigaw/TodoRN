@@ -1,16 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  Image,
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
+import {Image, View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+// import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 
 import styles from './styles';
 
-import LogOutSvg from "../../assets/svg/log-out.svg";
+import LogOutSvg from '../../assets/svg/log-out.svg';
 
 import AppTitle from '../../components/AppTitle';
 import HeaderCircles from '../../components/HeaderCircles';
@@ -20,9 +15,10 @@ import {clearUserData} from '../../store/actions/user';
 import {useDispatch, useSelector} from 'react-redux';
 import {setShouldAutoAuthorize} from '../../utils/asyncStorage';
 
-Geolocation.setRNConfiguration({skipPermissionRequests: true, authorizationLevel: 'whenInUse' });
-Geolocation.requestAuthorization();
-// Geolocation.setRNConfiguration(config);
+Geolocation.setRNConfiguration({
+  skipPermissionRequests: true,
+  authorizationLevel: 'whenInUse',
+});
 
 export default HomeScreen = ({navigation, route}) => {
   const user = useSelector(state => state.user.user);
@@ -31,29 +27,19 @@ export default HomeScreen = ({navigation, route}) => {
   const avatarUri = useSelector(state => state.user.avatar);
   const dispatch = useDispatch();
   const newAvatar = route?.params?.newAvatar;
-  const watchID = useRef(null)
+  const watchID = useRef(null);
 
   useEffect(() => {
-    // if(newAvatar) setAvatar
-    // console.log('avatar', avatar);
-    // console.log(position)
-  });
-
-  useEffect(() => {
-    // Geolocation.getCurrentPosition(
-    //   info => {
-    //     setPosition(info);
-    //   },
-    //   // error => Alert.alert('Error', JSON.stringify(error)),
-    //   error => console.log('geolocation error'),
-    //   {enableHighAccuracy: true, timeout: 1000, maximumAge: 1000},
-    // );
-    // watchID.current = Geolocation.watchPosition(info => {
-    //   setPosition(info)
-    // });
-    // return () => {
-    //   Geolocation.clearWatch(watchID.current);
-    // }
+    watchID.current = Geolocation.watchPosition(
+      info => {
+        setPosition(info);
+      },
+      error => console.log(error),
+      {interval: 10000, distanceFilter: 1}
+    );
+    return () => {
+      Geolocation.clearWatch(watchID.current);
+    };
   }, []);
 
   return (
@@ -67,9 +53,8 @@ export default HomeScreen = ({navigation, route}) => {
                 setShouldAutoAuthorize(false);
                 dispatch(clearUserData());
               }}
-              style={{alignSelf: 'flex-end', marginBottom: 12}}
-              >
-              <LogOutSvg/>
+              style={{alignSelf: 'flex-end', marginBottom: 12}}>
+              <LogOutSvg />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
               {newAvatar ? (

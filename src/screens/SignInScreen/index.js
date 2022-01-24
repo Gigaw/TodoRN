@@ -18,8 +18,9 @@ export default SignInScreen = ({navigation, route}) => {
     (async () => {
       try {
         const cachedSignInData = await getSignInData();
-        setEmail(cachedSignInData.email);
-        setPassword(cachedSignInData.password);
+        // console.log(cachedSignInData);
+        setEmail(cachedSignInData?.email || '');
+        setPassword(cachedSignInData?.password || '');
       } catch (e) {
         console.log('Ошибка получения данных и async storage');
       }
