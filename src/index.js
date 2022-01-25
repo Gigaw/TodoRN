@@ -14,53 +14,61 @@ import StartScreen from './screens/StartScreen';
 import {getSignInData} from './utils/asyncStorage';
 import {clearUserError, getUser} from './store/actions/user';
 import Camera from './screens/Camera';
-import PushNotification from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
+// import firebase from '@react-native-firebase/app';
+// const credentials = {
+//   clientId: '',
+//   appId: '',
+//   apiKey: '',
+//   databaseURL: '',
+//   storageBucket: '',
+//   messagingSenderId: '',
+//   projectId: '',
+// };
 
+// const config = {
+//   name: 'SECONDARY',
+// };
+// await firebase.initializeApp(credentials, config);
 const Stack = createNativeStackNavigator();
 
-PushNotification.configure({
-  onRegister: function (token) {
-    console.log("TOKEN:", token);
-  },
-  onNotification: function (notification) {
-    console.log("NOTIFICATION:", notification);
-  },
-  onAction: function (notification) {
-    console.log("ACTION:", notification.action);
-    console.log("NOTIFICATION:", notification);
-  },
+// PushNotification.configure({
+//   onRegister: function (token) {
+//     console.log("TOKEN:", token);
+//   },
+//   onNotification: function (notification) {
+//     console.log("NOTIFICATION:", notification);
+//   },
+//   onAction: function (notification) {
+//     console.log("ACTION:", notification.action);
+//     console.log("NOTIFICATION:", notification);
+//   },
 
-  onRegistrationError: function(err) {
-    console.error(err.message, err);
-  },
+//   onRegistrationError: function(err) {
+//     console.error(err.message, err);
+//   },
 
-  permissions: {
-    alert: true,
-    badge: true,
-    sound: true,
-  },
-  popInitialNotification: true,
-  requestPermissions: true,
-});
+//   permissions: {
+//     alert: true,
+//     badge: true,
+//     sound: true,
+//   },
+//   popInitialNotification: true,
+//   requestPermissions: true,
+// });
 
-PushNotification.createChannel(
-  {
-    channelId: "channel-id", // (required)
-    channelName: "My channel", // (required)
-    channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
-    playSound: false, // (optional) default: true
-    soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
-    importance: 4, // (optional) default: 4. Int value of the Android notification importance
-    vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-  },
-  (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-);
-
-const getToken = async () => {
-  const token = await messaging().getToken();
-  // console.log('token', token);
-  return token
-};
+// PushNotification.createChannel(
+//   {
+//     channelId: "channel-id", // (required)
+//     channelName: "My channel", // (required)
+//     channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+//     playSound: false, // (optional) default: true
+//     soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
+//     importance: 4, // (optional) default: 4. Int value of the Android notification importance
+//     vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+//   },
+//   (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+// );
 
 export default function Navigation() {
   const token = useSelector(state => state.user.token);
@@ -74,23 +82,23 @@ export default function Navigation() {
     ]);
   };
 
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // console.log(remoteMessage);
+  // useEffect(() => {
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     // console.log(remoteMessage);
       
-      PushNotification.localNotification({
-        channelId: 'channel-id',
-        channelName: 'My channel',
-        message: 'remoteMessage.notification.body',
-        title: 'remoteMessage.notification.title',
-      });
-      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
+  //     PushNotification.localNotification({
+  //       channelId: 'channel-id',
+  //       channelName: 'My channel',
+  //       message: 'remoteMessage.notification.body',
+  //       title: 'remoteMessage.notification.title',
+  //     });
+  //     // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  //   });
     
     
-    // getToken();
-    return unsubscribe;
-  }, []);
+  //   // getToken();
+  //   return unsubscribe;
+  // }, []);
 
   useEffect(() => {
     if (user.hasError) {
